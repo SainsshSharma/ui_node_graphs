@@ -3,6 +3,7 @@ import TopNav from "@/components/Custom/TopNav";
 import { Mulish } from "next/font/google";
 import "./globals.css";
 import { Provider } from "./Provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const MulishFont = Mulish({
   variables: ["300", "500", "700"],
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </div>
+        <Toaster/>
       </body>
     </html>
   );

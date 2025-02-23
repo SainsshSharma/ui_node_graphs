@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { SquareArrowOutUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 import { Card } from "../ui/card";
-import { ScrollArea } from "../ui/scroll-area";
+import { Checkbox } from "../ui/checkbox";
+import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -10,11 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Checkbox } from "../ui/checkbox";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { SquareArrowOutUpRight } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 function ConfigurationPannel({ selectedNode, data }) {
   const [selectedDeps, setSelectedDeps] = useState({});
@@ -39,14 +39,19 @@ function ConfigurationPannel({ selectedNode, data }) {
   }, [data]);
 
   const postDataMutation=useMutation({
-    mutationFn:async(data)=>await fetch('https://dummyApi/post', {
+    mutationFn:async(data)=>await fetch('https://dummyApi/configuration ', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-    })
+    }),
+    onSettled:()=>{
+      toast("Data has been send Successfully",{
+        className:'bg-[#f17400] text-white'
+      })
+    }
   })
 
   const handleDbConfigChange = (field) => (e) => {
@@ -82,9 +87,9 @@ function ConfigurationPannel({ selectedNode, data }) {
       "entities_to_mock":[Object.keys(selectedDeps).filter(i=>selectedDeps[i] && i)],
       "is_db_mocked":mockDatabase['I want to mock databases']?true:false,
       "db_config":{
-        "username":dbConfig.user,
-        "password":dbConfig.password,
-        "hostname":dbConfig.hostname
+        "username":mockDatabase['I want to mock databases']?dbConfig.user:'',
+        "password":mockDatabase['I want to mock databases']?dbConfig.password:'',
+        "hostname":mockDatabase['I want to mock databases']?dbConfig.hostname:''
       }
     }
     postDataMutation.mutate(data)
@@ -108,8 +113,8 @@ function ConfigurationPannel({ selectedNode, data }) {
         </div>
       </div>
 
-      <ScrollArea className="h-[calc(100%-5rem)] px-6 pb-6 ">
-        <div className="space-y-6">
+      <div className="h-[calc(100%-5rem)] px-6 pb-6 !block  overflow-y-auto">
+        <div className="space-y-6 ">
           <div>
             <h3 className="text-[16px] font-medium mb-3 ">Selected flow</h3>
             <Select defaultValue="post">
@@ -230,7 +235,7 @@ function ConfigurationPannel({ selectedNode, data }) {
             </div>
           </div>
         </div>
-      </ScrollArea>
+      </div>
       <div className="pt-2 w-full flex justify-end items-center pr-2 border-[#595858] border-t ">
         <Button className="bg-blue-500 text-white" onClick={sendResponse}>Save</Button>
       </div>

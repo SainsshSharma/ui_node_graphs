@@ -23,6 +23,7 @@ export default function Home() {
   const configurationPannel=useQuery({
     queryKey:['configurationPannel'+selectedNode?.id],
     queryFn:()=>rightPannelData
+    //will use selectedNode?.data?.label for flow to make a server call according to your need
   })
   
   return (
