@@ -11,6 +11,7 @@ import ReactFlow, {
   Controls,
   Handle,
   MarkerType,
+  useReactFlow,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { Button } from "../ui/button";
@@ -151,12 +152,20 @@ export default function FlowDiagram({ selectedNode, setSelectedNode, data }) {
     );
     setSelectedNode(node);
   };
+
   useEffect(() => {
     if (nodes.length > 1 && selectedNode == undefined) {
       nodes[0].data.isSelected = true;
       setSelectedNode(nodes[0]);
     }
+
   }, [nodes]);
+
+  const initalViewPort={
+    x:100,
+    y:-600,
+    zoom:1
+  }
 
   return (
     <div className="w-full h-full relative">
@@ -166,6 +175,7 @@ export default function FlowDiagram({ selectedNode, setSelectedNode, data }) {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
+        defaultViewport={initalViewPort}
         nodeTypes={nodeTypes}
       >
         <Controls

@@ -28,6 +28,20 @@ function ConfigurationPannel({ selectedNode, data }) {
     "I don't want to mock database": true,
   });
 
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsVisible(window.innerWidth >= 760);
+    };
+
+    handleResize(); 
+    window.addEventListener("resize", handleResize);
+    
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
   useEffect(() => {
     if (data && Array.isArray(data.data)) {
       const initialDeps = data?.data?.reduce((acc, dep) => {
@@ -94,9 +108,10 @@ function ConfigurationPannel({ selectedNode, data }) {
     }
     postDataMutation.mutate(data)
   }
+  if (!isVisible) return null; 
   
   return (
-    <Card className="lg:col-span-3 md:col-span-4 col-span-5 w-full h-[calc(100vh-12rem)]  border-[#595858] border-t">
+    <Card className="lg:col-span-3 md:col-span-4  col-span-5 w-full h-[calc(100vh-12rem)]  border-[#595858] border-t">
       <div className="p-6 ">
         <h2 className="text-lg font-medium">
           {selectedNode?.data.label.split(":").at(-1).split(".").at(-1)}

@@ -14,6 +14,8 @@ import { rightPannelData } from "./API/postRightPannelRequest";
 export default function Home() {
   const [selectedNode, setSelectedNode] = useState();
 
+  
+
   const graphData=useQuery({
     queryKey:["graph"],
     queryFn:()=>GraphRequest,
@@ -23,14 +25,14 @@ export default function Home() {
   const configurationPannel=useQuery({
     queryKey:['configurationPannel'+selectedNode?.id],
     queryFn:()=>rightPannelData
-    //will use selectedNode?.data?.label for flow to make a server call according to your need
+    //will use selectedNode?.data?.label for flow to make a server call according to your
   })
   
   return (
       <div className="flex h-full bg-background">
         <main className="flex-1 w-full bg-[#363636] text-white h-full">
           <div className="grid grid-cols-12 h-full">
-            <Card className="lg:col-span-9 md:col-span-8 col-span-6 h-full bg-[#181E25]">
+            <Card className="lg:col-span-9 md:col-span-8 col-span-12 h-full bg-[#181E25]">
               <div style={{ width: "100%", height: "100%" }}>
                 <FlowDiagram
                   selectedNode={selectedNode}
