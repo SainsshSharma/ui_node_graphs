@@ -1,13 +1,11 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import SideNav from "@/components/Custom/SideNav";
+import TopNav from "@/components/Custom/TopNav";
+import { Mulish } from "next/font/google";
 import "./globals.css";
+import { Provider } from "./Provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const MulishFont = Mulish({
+  variables: ["300", "500", "700"],
   subsets: ["latin"],
 });
 
@@ -19,10 +17,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={` ${MulishFont.className} antialiased`}>
+        <div className="flex w-screen h-screen">
+          <SideNav />
+
+          <div className="w-full h-auto flex flex-col ">
+            <TopNav />
+            <div className="h-full w-full">
+              <Provider>{children}</Provider>
+            </div>
+          </div>
+        </div>
       </body>
     </html>
   );
